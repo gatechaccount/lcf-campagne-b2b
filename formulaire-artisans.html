@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mettre à jour ma fiche · La Clôture Française</title>
+<style>
+  :root {
+    --night: #070921;
+    --blue: #0F3FB0;
+    --blue-soft: #EAF0FB;
+    --ink: #1c1e2b;
+    --grey-7: #333333;
+    --grey-6: #555555;
+    --grey-5: #777777;
+    --grey-4: #9aa0ab;
+    --line: #e2e4e9;
+    --line-soft: #f0f0f2;
+    --paper: #ffffff;
+    --bg: #f4f5f7;
+    --ok: #1a7f4b;
+    --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--grey-7);
+    line-height: 1.5;
+    padding: 40px 20px 80px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 640px; margin: 0 auto; }
+
+  /* En-tête */
+  .head {
+    background: var(--night); color: #fff;
+    border-radius: 14px 14px 0 0;
+    padding: 30px 30px 26px;
+  }
+  .brand {
+    font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
+    text-transform: uppercase; color: #9db4e8;
+  }
+  .head h1 {
+    font-size: 24px; font-weight: 700; margin-top: 12px; letter-spacing: -0.4px;
+    color: #fff;
+  }
+  .head p { font-size: 14px; color: #c5cbe0; margin-top: 8px; }
+  .progress-track {
+    height: 4px; background: rgba(255,255,255,0.15); border-radius: 100px;
+    margin-top: 22px; overflow: hidden;
+  }
+  .progress-fill { height: 100%; width: 0%; background: #6f9bff; transition: width 0.3s ease; }
+  .progress-label { font-size: 12px; color: #9db4e8; margin-top: 8px; }
+
+  /* Corps du formulaire */
+  .form-body {
+    background: var(--paper);
+    border: 1px solid var(--line); border-top: none;
+    border-radius: 0 0 14px 14px;
+    padding: 10px 30px 30px;
+  }
+  .q { padding: 22px 0; border-bottom: 1px solid var(--line-soft); }
+  .q:last-of-type { border-bottom: none; }
+  .q-label {
+    display: flex; gap: 10px; align-items: baseline;
+    font-size: 15px; font-weight: 600; color: var(--ink); margin-bottom: 14px;
+  }
+  .q-num {
+    flex-shrink: 0; font-size: 12px; font-weight: 700; color: var(--blue);
+    background: var(--blue-soft); border-radius: 6px;
+    width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;
+  }
+  .q-label .opt-tag { font-weight: 500; color: var(--grey-4); font-size: 12px; }
+
+  /* Options radio/checkbox en pastilles */
+  .opts { display: flex; flex-wrap: wrap; gap: 8px; padding-left: 34px; }
+  .opt {
+    position: relative; cursor: pointer;
+  }
+  .opt input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
+  .opt span {
+    display: block; font-size: 13.5px; color: var(--grey-7);
+    padding: 9px 15px; border: 1.5px solid var(--line); border-radius: 8px;
+    transition: all 0.15s ease; user-select: none; background: #fff;
+  }
+  .opt input:checked + span {
+    border-color: var(--blue); background: var(--blue-soft);
+    color: var(--blue); font-weight: 600;
+  }
+  .opt input:focus-visible + span { outline: 2px solid var(--blue); outline-offset: 2px; }
+
+  /* Champs texte */
+  .fields { padding-left: 34px; display: grid; gap: 12px; }
+  .fields.two { grid-template-columns: 1fr 1fr; }
+  .field label {
+    display: block; font-size: 12px; font-weight: 600;
+    color: var(--grey-6); margin-bottom: 5px;
+  }
+  .field input {
+    width: 100%; font-family: var(--font); font-size: 14px; color: var(--ink);
+    padding: 10px 13px; border: 1.5px solid var(--line); border-radius: 8px;
+    transition: border-color 0.15s ease;
+  }
+  .field input:focus { outline: none; border-color: var(--blue); }
+  .field input::placeholder { color: var(--grey-4); }
+
+  .hint { padding-left: 34px; font-size: 12px; color: var(--grey-5); margin-top: 8px; }
+
+  /* Pied / envoi */
+  .submit-row { margin-top: 28px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .btn {
+    background: var(--blue); color: #fff; font-family: var(--font);
+    font-size: 15px; font-weight: 600; border: none; cursor: pointer;
+    padding: 13px 26px; border-radius: 8px; transition: background 0.15s ease;
+  }
+  .btn:hover { background: #0c339a; }
+  .submit-note { font-size: 12px; color: var(--grey-5); }
+
+  /* Écran de confirmation */
+  .done {
+    display: none; text-align: center; padding: 50px 30px;
+  }
+  .done.show { display: block; }
+  .done .check {
+    width: 56px; height: 56px; border-radius: 50%; background: var(--ok);
+    color: #fff; font-size: 28px; display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 20px;
+  }
+  .done h2 { font-size: 20px; color: var(--night); margin-bottom: 10px; }
+  .done p { font-size: 14px; color: var(--grey-6); max-width: 380px; margin: 0 auto; }
+
+  .foot {
+    text-align: center; font-size: 12px; color: var(--grey-4);
+    margin-top: 24px;
+  }
+
+  @media (max-width: 520px) {
+    body { padding: 20px 12px 50px; }
+    .head, .form-body { padding-left: 20px; padding-right: 20px; }
+    .opts, .fields, .hint { padding-left: 0; }
+    .fields.two { grid-template-columns: 1fr; }
+    .q-label { padding-left: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <form id="qualForm">
+    <div class="head">
+      <div class="brand">La Clôture Française · Espace Pro</div>
+      <h1>Mettons votre fiche à jour</h1>
+      <p>30 secondes pour nous parler de votre activité. Ça nous permet de vous accompagner au plus près de vos besoins, et de voir comment on peut vous aider à développer votre activité de pose.</p>
+      <div class="progress-track"><div class="progress-fill" id="bar"></div></div>
+      <div class="progress-label"><span id="answered">0</span> / 10 questions</div>
+    </div>
+
+    <div class="form-body" id="questions">
+
+      <!-- Q1 -->
+      <div class="q">
+        <div class="q-label"><span class="q-num">1</span> Posez-vous des clôtures aujourd'hui ?</div>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="q1" value="regulierement"><span>Oui, régulièrement</span></label>
+          <label class="opt"><input type="radio" name="q1" value="occasionnellement"><span>Occasionnellement</span></label>
+          <label class="opt"><input type="radio" name="q1" value="non"><span>Non, pas actuellement</span></label>
+        </div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="q">
+        <div class="q-label"><span class="q-num">2</span> Combien de clôtures posez-vous par an, environ ?</div>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="q2" value="0-5"><span>Moins de 5</span></label>
+          <label class="opt"><input type="radio" name="q2" value="5-20"><span>5 à 20</span></label>
+          <label class="opt"><input type="radio" name="q2" value="20-50"><span>20 à 50</span></label>
+          <label class="opt"><input type="radio" name="q2" value="50+"><span>Plus de 50</span></label>
+        </div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="q">
+        <div class="q-label"><span class="q-num">3</span> Quel est votre métier principal ?</div>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="q3" value="cloturiste"><span>Clôturiste</span></label>
+          <label class="opt"><input type="radio" name="q3" value="paysagiste"><span>Paysagiste</span></label>
+          <label class="opt"><input type="radio" name="q3" value="macon"><span>Maçon</span></label>
+          <label class="opt"><input type="radio" name="q3" value="multi"><span>Multi-services</span></label>
+          <label class="opt"><input type="radio" name="q3" value="autre"><span>Autre</span></label>
+        </div>
+      </div>
+
+      <!-- Q4 -->
+      <div class="q">
+        <div class="q-label"><span class="q-num">4</span> Pour quelle clientèle travaillez-vous surtout ?</div>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="q4" value="particuliers"><span>Particuliers</span></label>
+          <label class="opt"><input type="radio" name="q4" value="pros"><span>Professionnels</span></label>
+          <label class="opt"><input type="radio" name="q4" value="collectivites"><span>Collectivités</span></label>
+          <label class="opt"><input type="radio" name="q4" value="mixte"><span>Un peu de tout</span></label>
+        </div>
+      </div>
+
+      <!-- Q5 -->
+      <div class="q">
+        <div class="q-label"><span class="q-num">5</span> Connaissez-vous déjà les produits La Clôture Française ?</div>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="q5" value="bien"><span>Oui, bien</span></label>
+          <label class="opt"><input type="radio" name="q5" value="denom"><span>De nom</span></label>
+          <label class="opt"><input type="radio" name="q5" value="peu"><span>Pas encore vraiment</span></label>
+        </div>
+      </div>
+
+      <!-- Q6 -->
+      <div class="q">
+        <div class="q-label"><span class="q-num">6</span> Avez-vous déjà posé nos clôtures ?</div>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="q6" value="oui-souvent"><span>Oui, plusieurs fois</span></label>
+          <label class="opt"><input type="radio" name="q6" value="oui-une"><span>Oui, une fois</span></label>
+          <label class="opt"><input type="radio" name="q6" value="non"><span>Jamais</span></label>
+        </div>
+      </div>
+
+      <!-- Q7 -->
+      <div class="q">
+        <div class="q-label"><span class="q-num">7</span> Quels matériaux posez-vous le plus ? <span class="opt-tag">plusieurs choix possibles</span></div>
+        <div class="opts">
+          <label class="opt"><input type="checkbox" name="q7" value="pvc"><span>PVC</span></label>
+          <label class="opt"><input type="checkbox" name="q7" value="alu"><span>Aluminium</span></label>
+          <label class="opt"><input type="checkbox" name="q7" value="composite"><span>Composite</span></label>
+          <label class="opt"><input type="checkbox" name="q7" value="grillage"><span>Grillage / rigide</span></label>
+          <label class="opt"><input type="checkbox" name="q7" value="bois"><span>Bois</span></label>
+        </div>
+      </div>
+
+      <!-- Q8 -->
+      <div class="q">
+        <div class="q-label"><span class="q-num">8</span> Notre réseau de poseurs recommandés vous intéresse-t-il ?</div>
+        <div class="hint" style="margin-top:-6px;margin-bottom:12px;padding-left:34px;">Dès 3 avis clients positifs, on vous envoie des chantiers de pose dans votre région.</div>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="q8" value="oui"><span>Oui, ça m'intéresse</span></label>
+          <label class="opt"><input type="radio" name="q8" value="ensavoirplus"><span>J'aimerais en savoir plus</span></label>
+          <label class="opt"><input type="radio" name="q8" value="non"><span>Pas pour l'instant</span></label>
+        </div>
+      </div>
+
+      <!-- Q9 -->
+      <div class="q">
+        <div class="q-label"><span class="q-num">9</span> Cherchez-vous à développer votre activité de pose ?</div>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="q9" value="activement"><span>Oui, activement</span></label>
+          <label class="opt"><input type="radio" name="q9" value="ouvert"><span>Je reste ouvert</span></label>
+          <label class="opt"><input type="radio" name="q9" value="non"><span>Non, ça me va comme ça</span></label>
+        </div>
+      </div>
+
+      <!-- Q10 -->
+      <div class="q">
+        <div class="q-label"><span class="q-num">10</span> Vos coordonnées, pour qu'on vous recontacte</div>
+        <div class="fields two">
+          <div class="field"><label>Nom / entreprise</label><input type="text" name="nom" placeholder="Ex. Dupont Clôtures"></div>
+          <div class="field"><label>Zone d'intervention</label><input type="text" name="zone" placeholder="Ex. Gironde (33)"></div>
+          <div class="field"><label>E-mail</label><input type="email" name="email" placeholder="vous@exemple.fr"></div>
+          <div class="field"><label>Téléphone</label><input type="tel" name="tel" placeholder="06 00 00 00 00"></div>
+        </div>
+      </div>
+
+      <div class="submit-row">
+        <button type="submit" class="btn">Envoyer ma fiche</button>
+        <span class="submit-note">Vos informations restent confidentielles et ne servent qu'à notre suivi pro.</span>
+      </div>
+
+    </div>
+  </form>
+
+  <!-- Confirmation -->
+  <div class="done" id="done">
+    <div class="head" style="border-radius:14px 14px 0 0;">
+      <div class="brand">La Clôture Française · Espace Pro</div>
+    </div>
+    <div class="form-body" style="border-radius:0 0 14px 14px;">
+      <div class="check">✓</div>
+      <h2>Merci, c'est bien reçu !</h2>
+      <p>Votre fiche est à jour. Un membre de notre équipe reviendra vers vous rapidement pour faire le point sur votre activité et vos besoins.</p>
+    </div>
+  </div>
+
+  <div class="foot">Growth Angels × La Clôture Française · Formulaire de qualification artisans · <a href="index.html" style="color:var(--grey-5);">Retour à l'accueil</a></div>
+
+</div>
+
+<script>
+  const form = document.getElementById('qualForm');
+  const bar = document.getElementById('bar');
+  const answered = document.getElementById('answered');
+
+  // Groupes de questions à suivre pour la progression (Q1 à Q9 + le bloc coordonnées = 10)
+  const groups = ['q1','q2','q3','q4','q5','q6','q7','q8','q9'];
+
+  function updateProgress() {
+    let count = 0;
+    groups.forEach(name => {
+      if (form.querySelector('input[name="'+name+'"]:checked')) count++;
+    });
+    // Q10 : considérée répondue si email OU téléphone rempli
+    const email = form.querySelector('input[name="email"]').value.trim();
+    const tel = form.querySelector('input[name="tel"]').value.trim();
+    if (email || tel) count++;
+    answered.textContent = count;
+    bar.style.width = (count / 10 * 100) + '%';
+  }
+
+  form.addEventListener('change', updateProgress);
+  form.addEventListener('input', updateProgress);
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    // Ici, brancher l'envoi réel (Airtable, HubSpot, endpoint...).
+    document.getElementById('qualForm').style.display = 'none';
+    document.getElementById('done').classList.add('show');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script>
+</body>
+</html>

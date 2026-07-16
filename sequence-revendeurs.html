@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Séquence Revendeurs · La Clôture Française</title>
+<style>
+  :root {
+    --night: #070921;
+    --blue: #0F3FB0;
+    --blue-soft: #EAF0FB;
+    --ink: #1c1e2b;
+    --grey-7: #333333;
+    --grey-6: #555555;
+    --grey-5: #777777;
+    --grey-4: #9aa0ab;
+    --line: #e6e6e6;
+    --line-soft: #f0f0f2;
+    --paper: #ffffff;
+    --bg: #f4f5f7;
+    --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--grey-7);
+    line-height: 1.5;
+    padding: 40px 20px 80px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; }
+
+  /* En-tête de page */
+  .page-head {
+    margin-bottom: 36px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid var(--night);
+  }
+  .brand {
+    font-size: 12px; font-weight: 700; letter-spacing: 1.5px;
+    color: var(--night); text-transform: uppercase;
+  }
+  .brand span { color: var(--grey-5); font-weight: 500; }
+  .page-title {
+    font-size: 26px; font-weight: 700; color: var(--night);
+    margin-top: 14px; letter-spacing: -0.4px;
+  }
+  .page-sub {
+    font-size: 14px; color: var(--grey-6); margin-top: 8px;
+  }
+  .seq-meta {
+    display: inline-flex; gap: 8px; margin-top: 16px; flex-wrap: wrap;
+  }
+  .chip {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.4px;
+    padding: 4px 10px; border-radius: 100px;
+    background: var(--blue-soft); color: var(--blue);
+  }
+  .chip.dark { background: var(--night); color: #fff; }
+
+  /* Timeline de séquence */
+  .rail { position: relative; }
+  .rail::before {
+    content: ""; position: absolute; left: 19px; top: 12px; bottom: 40px;
+    width: 2px; background: var(--line); z-index: 0;
+  }
+
+  /* Carte e-mail */
+  .mail-row { position: relative; padding-left: 56px; margin-bottom: 28px; }
+  .node {
+    position: absolute; left: 0; top: 14px; width: 40px; height: 40px;
+    border-radius: 50%; background: var(--paper); border: 2px solid var(--blue);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; color: var(--blue); z-index: 1;
+  }
+  .day {
+    position: absolute; left: 0; top: 58px; width: 40px; text-align: center;
+    font-size: 10px; font-weight: 600; color: var(--grey-5); letter-spacing: 0.3px;
+  }
+
+  .mail {
+    background: var(--paper); border: 1px solid var(--line);
+    border-radius: 10px; overflow: hidden;
+    box-shadow: 0 1px 2px rgba(7,9,33,0.04);
+  }
+  .mail-head {
+    padding: 14px 18px; border-bottom: 1px solid var(--line-soft);
+    display: flex; align-items: center; gap: 12px;
+  }
+  .avatar {
+    width: 38px; height: 38px; border-radius: 50%; flex-shrink: 0;
+    background: var(--night); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 700;
+  }
+  .from { flex: 1; min-width: 0; }
+  .from-top { display: flex; align-items: baseline; gap: 8px; }
+  .from-name { font-size: 14px; font-weight: 700; color: var(--ink); }
+  .from-addr { font-size: 12px; color: var(--grey-5); }
+  .to { font-size: 12px; color: var(--grey-5); margin-top: 2px; }
+  .stage {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.4px;
+    padding: 3px 8px; border-radius: 4px; flex-shrink: 0;
+    background: var(--blue-soft); color: var(--blue); text-transform: uppercase;
+  }
+  .subject-bar {
+    padding: 12px 18px; background: #fafbfd;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .subject-label { font-size: 11px; color: var(--grey-5); font-weight: 600; }
+  .subject { font-size: 15px; font-weight: 700; color: var(--night); margin-top: 2px; }
+
+  .body { padding: 20px 18px 22px; }
+  .body p { font-size: 14px; color: var(--grey-7); margin-bottom: 13px; }
+  .body p:last-child { margin-bottom: 0; }
+  .body .greeting { color: var(--ink); }
+  .body .subhead {
+    font-size: 13px; font-weight: 700; color: var(--night);
+    margin: 18px 0 10px; letter-spacing: -0.1px;
+  }
+  .body ul { list-style: none; margin: 0 0 13px; }
+  .body li {
+    font-size: 14px; color: var(--grey-7); padding-left: 18px;
+    position: relative; margin-bottom: 8px;
+  }
+  .body li::before {
+    content: ""; position: absolute; left: 2px; top: 8px;
+    width: 5px; height: 5px; border-radius: 50%; background: var(--blue);
+  }
+  .cta {
+    display: inline-block; margin: 4px 0 6px;
+    background: var(--blue); color: #fff; font-size: 13px; font-weight: 600;
+    padding: 10px 18px; border-radius: 6px; text-decoration: none;
+  }
+  .field { color: var(--grey-4); font-style: italic; }
+  .sign { color: var(--grey-6); margin-top: 4px; }
+  .sign .name { color: var(--ink); font-style: normal; font-weight: 600; }
+
+  .note {
+    background: var(--blue-soft); border-radius: 8px;
+    padding: 12px 16px; font-size: 12px; color: var(--grey-6);
+    margin-top: 14px; line-height: 1.5;
+  }
+  .note b { color: var(--blue); }
+
+  .foot {
+    text-align: center; font-size: 12px; color: var(--grey-4);
+    margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--line);
+  }
+  @media (max-width: 560px) {
+    body { padding: 24px 12px 60px; }
+    .mail-row { padding-left: 44px; }
+    .rail::before { left: 15px; }
+    .node { width: 32px; height: 32px; font-size: 10px; }
+    .day { width: 32px; top: 48px; }
+    .from-top { flex-direction: column; gap: 2px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="page-head">
+    <div class="brand">GROWTH ANGELS <span>× La Clôture Française</span></div>
+    <h1 class="page-title">Séquence Revendeurs</h1>
+    <p class="page-sub">Reprise de contact estivale · reprendre le dialogue, prendre des nouvelles de leur saison, rappeler la valeur. Aucune incitation directe à commander : les particuliers commandent en direct chez LCF.</p>
+    <div class="seq-meta">
+      <span class="chip dark">1 122 contacts</span>
+      <span class="chip">Flag « Revendeur »</span>
+      <span class="chip">4 e-mails · J0 → J+20</span>
+      <span class="chip">Sortie si réponse</span>
+    </div>
+  </div>
+
+  <div class="rail">
+
+    <!-- MAIL 1 -->
+    <div class="mail-row">
+      <div class="node">01</div>
+      <div class="day">J0</div>
+      <div class="mail">
+        <div class="mail-head">
+          <div class="avatar">LCF</div>
+          <div class="from">
+            <div class="from-top">
+              <span class="from-name">La Clôture Française</span>
+              <span class="from-addr">pro@lacloturefrancaise.fr</span>
+            </div>
+            <div class="to">à vous · revendeur référencé</div>
+          </div>
+          <span class="stage">Reprise</span>
+        </div>
+        <div class="subject-bar">
+          <div class="subject-label">Objet</div>
+          <div class="subject">Comment se passe votre saison clôtures ?</div>
+        </div>
+        <div class="body">
+          <p class="greeting">Bonjour [Prénom],</p>
+          <p>Ça fait un moment qu'on n'a pas échangé, et on profite du plein cœur de la saison clôtures pour reprendre contact avec nos revendeurs.</p>
+          <p>On voulait simplement savoir comment ça se passe de votre côté : est-ce que la demande est au rendez-vous cet été ? Est-ce que certains modèles partent mieux que d'autres ? Est-ce qu'il y a des sujets sur lesquels on pourrait vous donner un coup de main ?</p>
+          <p>Si vous avez 2 minutes, répondez-moi directement à ce mail. Ça nous aide à mieux vous accompagner et à garder votre suivi à jour.</p>
+          <p class="sign">Bien à vous,<br><span class="name">[Prénom · interlocuteur LCF]</span><br>La Clôture Française</p>
+          <div class="note"><b>Rôle →</b> ouvrir le dialogue sans rien vendre. Le seul appel à l'action est « répondez-moi ». Sortie de séquence dès qu'un revendeur répond.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAIL 2 -->
+    <div class="mail-row">
+      <div class="node">02</div>
+      <div class="day">J+5</div>
+      <div class="mail">
+        <div class="mail-head">
+          <div class="avatar">LCF</div>
+          <div class="from">
+            <div class="from-top">
+              <span class="from-name">La Clôture Française</span>
+              <span class="from-addr">pro@lacloturefrancaise.fr</span>
+            </div>
+            <div class="to">à vous · revendeur référencé</div>
+          </div>
+          <span class="stage">Valeur</span>
+        </div>
+        <div class="subject-bar">
+          <div class="subject-label">Objet</div>
+          <div class="subject">Ce qui se vend le mieux cet été</div>
+        </div>
+        <div class="body">
+          <p class="greeting">Bonjour [Prénom],</p>
+          <p>Pour vous donner un repère utile en pleine saison, voici ce qui tourne le mieux en ce moment chez nos revendeurs :</p>
+          <ul>
+            <li><span class="field">[Modèle / gamme 1] : [une ligne · pourquoi ça performe cet été]</span></li>
+            <li><span class="field">[Modèle / gamme 2] : [une ligne]</span></li>
+            <li><span class="field">[Modèle / gamme 3] : [une ligne]</span></li>
+          </ul>
+          <p>Si l'un de ces modèles correspond à ce que vos clients recherchent, on peut vous donner tous les détails (finitions, coloris, délais du moment) pour que vous conseilliez en confiance.</p>
+          <p>Et si vous voyez d'autres tendances sur votre secteur, ça nous intéresse : dites-le-nous.</p>
+          <p class="sign">Bien à vous,<br><span class="name">[Prénom · interlocuteur LCF]</span><br>La Clôture Française</p>
+          <div class="note"><b>Rôle →</b> apporter de l'information qui aide à vendre, sans pousser à commander. Renforce LCF comme partenaire, pas comme fournisseur qui relance.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAIL 3 -->
+    <div class="mail-row">
+      <div class="node">03</div>
+      <div class="day">J+12</div>
+      <div class="mail">
+        <div class="mail-head">
+          <div class="avatar">LCF</div>
+          <div class="from">
+            <div class="from-top">
+              <span class="from-name">La Clôture Française</span>
+              <span class="from-addr">pro@lacloturefrancaise.fr</span>
+            </div>
+            <div class="to">à vous · revendeur référencé</div>
+          </div>
+          <span class="stage">Conditions</span>
+        </div>
+        <div class="subject-bar">
+          <div class="subject-label">Objet</div>
+          <div class="subject">Un rappel sur vos conditions revendeur</div>
+        </div>
+        <div class="body">
+          <p class="greeting">Bonjour [Prénom],</p>
+          <p>Un petit rappel qui peut être utile : en tant que revendeur référencé chez nous, vous bénéficiez d'au minimum 40% de remise sur nos gammes, avec une marge pensée pour que vous puissiez revendre confortablement derrière.</p>
+          <p>Si vous avez un doute sur vos conditions actuelles, ou si votre activité a évolué depuis notre dernier échange (nouveau point de vente, nouveaux volumes, nouvelle clientèle), c'est le bon moment pour faire le point ensemble et ajuster ce qui doit l'être.</p>
+          <p>Un e-mail ou un appel suffit, on s'occupe du reste.</p>
+          <p class="sign">Bien à vous,<br><span class="name">[Prénom · interlocuteur LCF]</span><br>La Clôture Française · [téléphone]</p>
+          <div class="note"><b>Rôle →</b> réactiver la valeur perçue (beaucoup de dormants ont juste oublié leurs avantages) et créer une raison d'échanger, toujours sans injonction de commande.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAIL 4 -->
+    <div class="mail-row">
+      <div class="node">04</div>
+      <div class="day">J+20</div>
+      <div class="mail">
+        <div class="mail-head">
+          <div class="avatar">LCF</div>
+          <div class="from">
+            <div class="from-top">
+              <span class="from-name">La Clôture Française</span>
+              <span class="from-addr">pro@lacloturefrancaise.fr</span>
+            </div>
+            <div class="to">à vous · revendeur référencé</div>
+          </div>
+          <span class="stage">Dernière porte</span>
+        </div>
+        <div class="subject-bar">
+          <div class="subject-label">Objet</div>
+          <div class="subject">On reste à votre disposition</div>
+        </div>
+        <div class="body">
+          <p class="greeting">Bonjour [Prénom],</p>
+          <p>Je ne veux pas encombrer votre boîte mail, alors ce sera mon dernier message pour cette fois.</p>
+          <p>L'idée de reprendre contact était surtout de savoir comment allait votre activité et de vous dire qu'on est toujours là, prêts à vous accompagner quand vous en aurez besoin.</p>
+          <p>Que ce soit pour une question, un point sur vos conditions ou simplement échanger sur votre saison, ma porte reste ouverte. Répondez-moi quand vous voulez.</p>
+          <p>Belle saison à vous, et au plaisir de vous relire.</p>
+          <p class="sign">Bien à vous,<br><span class="name">[Prénom · interlocuteur LCF]</span><br>La Clôture Française</p>
+          <div class="note"><b>Rôle →</b> clôture honnête, sans culpabilisation. On laisse une bonne impression et une porte ouverte, ce qui vaut mieux qu'une relance de trop sur une base ancienne.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="foot">Growth Angels × La Clôture Française · Séquence de réactivation revendeurs · été 2026</div>
+
+</div>
+</body>
+</html>

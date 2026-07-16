@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Séquence Artisans · La Clôture Française</title>
+<style>
+  :root {
+    --night: #070921;
+    --blue: #0F3FB0;
+    --blue-soft: #EAF0FB;
+    --ink: #1c1e2b;
+    --grey-7: #333333;
+    --grey-6: #555555;
+    --grey-5: #777777;
+    --grey-4: #9aa0ab;
+    --line: #e6e6e6;
+    --line-soft: #f0f0f2;
+    --paper: #ffffff;
+    --bg: #f4f5f7;
+    --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--grey-7);
+    line-height: 1.5;
+    padding: 40px 20px 80px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; }
+
+  .page-head {
+    margin-bottom: 36px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid var(--night);
+  }
+  .brand {
+    font-size: 12px; font-weight: 700; letter-spacing: 1.5px;
+    color: var(--night); text-transform: uppercase;
+  }
+  .brand span { color: var(--grey-5); font-weight: 500; }
+  .page-title {
+    font-size: 26px; font-weight: 700; color: var(--night);
+    margin-top: 14px; letter-spacing: -0.4px;
+  }
+  .page-sub {
+    font-size: 14px; color: var(--grey-6); margin-top: 8px;
+  }
+  .seq-meta {
+    display: inline-flex; gap: 8px; margin-top: 16px; flex-wrap: wrap;
+  }
+  .chip {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.4px;
+    padding: 4px 10px; border-radius: 100px;
+    background: var(--blue-soft); color: var(--blue);
+  }
+  .chip.dark { background: var(--night); color: #fff; }
+
+  .rail { position: relative; }
+  .rail::before {
+    content: ""; position: absolute; left: 19px; top: 12px; bottom: 40px;
+    width: 2px; background: var(--line); z-index: 0;
+  }
+
+  .mail-row { position: relative; padding-left: 56px; margin-bottom: 28px; }
+  .node {
+    position: absolute; left: 0; top: 14px; width: 40px; height: 40px;
+    border-radius: 50%; background: var(--paper); border: 2px solid var(--blue);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; color: var(--blue); z-index: 1;
+  }
+  .day {
+    position: absolute; left: 0; top: 58px; width: 40px; text-align: center;
+    font-size: 10px; font-weight: 600; color: var(--grey-5); letter-spacing: 0.3px;
+  }
+
+  .mail {
+    background: var(--paper); border: 1px solid var(--line);
+    border-radius: 10px; overflow: hidden;
+    box-shadow: 0 1px 2px rgba(7,9,33,0.04);
+  }
+  .mail-head {
+    padding: 14px 18px; border-bottom: 1px solid var(--line-soft);
+    display: flex; align-items: center; gap: 12px;
+  }
+  .avatar {
+    width: 38px; height: 38px; border-radius: 50%; flex-shrink: 0;
+    background: var(--night); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 700;
+  }
+  .avatar.person { background: var(--blue); }
+  .from { flex: 1; min-width: 0; }
+  .from-top { display: flex; align-items: baseline; gap: 8px; }
+  .from-name { font-size: 14px; font-weight: 700; color: var(--ink); }
+  .from-addr { font-size: 12px; color: var(--grey-5); }
+  .to { font-size: 12px; color: var(--grey-5); margin-top: 2px; }
+  .stage {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.4px;
+    padding: 3px 8px; border-radius: 4px; flex-shrink: 0;
+    background: var(--blue-soft); color: var(--blue); text-transform: uppercase;
+  }
+  .subject-bar {
+    padding: 12px 18px; background: #fafbfd;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .subject-label { font-size: 11px; color: var(--grey-5); font-weight: 600; }
+  .subject { font-size: 15px; font-weight: 700; color: var(--night); margin-top: 2px; }
+
+  .body { padding: 20px 18px 22px; }
+  .body p { font-size: 14px; color: var(--grey-7); margin-bottom: 13px; }
+  .body p:last-child { margin-bottom: 0; }
+  .body .greeting { color: var(--ink); }
+  .body .subhead {
+    font-size: 13px; font-weight: 700; color: var(--night);
+    margin: 18px 0 10px; letter-spacing: -0.1px;
+  }
+  .body ul { list-style: none; margin: 0 0 13px; }
+  .body li {
+    font-size: 14px; color: var(--grey-7); padding-left: 18px;
+    position: relative; margin-bottom: 8px;
+  }
+  .body li::before {
+    content: ""; position: absolute; left: 2px; top: 8px;
+    width: 5px; height: 5px; border-radius: 50%; background: var(--blue);
+  }
+  .cta {
+    display: inline-block; margin: 4px 0 6px;
+    background: var(--blue); color: #fff; font-size: 13px; font-weight: 600;
+    padding: 10px 18px; border-radius: 6px; text-decoration: none;
+  }
+  .field { color: var(--grey-4); font-style: italic; }
+  .sign { color: var(--grey-6); margin-top: 4px; }
+  .sign .name { color: var(--ink); font-style: normal; font-weight: 600; }
+
+  .note {
+    background: var(--blue-soft); border-radius: 8px;
+    padding: 12px 16px; font-size: 12px; color: var(--grey-6);
+    margin-top: 14px; line-height: 1.5;
+  }
+  .note b { color: var(--blue); }
+
+  .foot {
+    text-align: center; font-size: 12px; color: var(--grey-4);
+    margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--line);
+  }
+  @media (max-width: 560px) {
+    body { padding: 24px 12px 60px; }
+    .mail-row { padding-left: 44px; }
+    .rail::before { left: 15px; }
+    .node { width: 32px; height: 32px; font-size: 10px; }
+    .day { width: 32px; top: 48px; }
+    .from-top { flex-direction: column; gap: 2px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="page-head">
+    <div class="brand">GROWTH ANGELS <span>× La Clôture Française</span></div>
+    <h1 class="page-title">Séquence Artisans</h1>
+    <p class="page-sub">Reprise de contact avec d'anciens leads pros sans commande. Objectif : reprendre le dialogue, qualifier leur activité, et présenter le réseau de poseurs recommandés par LCF. Ils connaissent déjà la marque.</p>
+    <div class="seq-meta">
+      <span class="chip dark">31 contacts</span>
+      <span class="chip">Pro non revendeur · sans transaction</span>
+      <span class="chip">4 e-mails · J0 → J+20</span>
+      <span class="chip">Sortie si réponse</span>
+    </div>
+  </div>
+
+  <div class="rail">
+
+    <!-- MAIL 1 -->
+    <div class="mail-row">
+      <div class="node">01</div>
+      <div class="day">J0</div>
+      <div class="mail">
+        <div class="mail-head">
+          <div class="avatar">LCF</div>
+          <div class="from">
+            <div class="from-top">
+              <span class="from-name">La Clôture Française</span>
+              <span class="from-addr">pro@lacloturefrancaise.fr</span>
+            </div>
+            <div class="to">à vous · artisan</div>
+          </div>
+          <span class="stage">Reprise</span>
+        </div>
+        <div class="subject-bar">
+          <div class="subject-label">Objet</div>
+          <div class="subject">On a du nouveau pour les artisans poseurs</div>
+        </div>
+        <div class="body">
+          <p class="greeting">Bonjour [Prénom],</p>
+          <p>Je reviens vers vous aujourd'hui car on développe un réseau d'artisans poseurs, et je pensais à vous.</p>
+          <p>Avant d'entrer dans les détails, j'aimerais surtout prendre de vos nouvelles : comment se porte votre activité en ce moment ? Est-ce que vous posez des clôtures ?</p>
+          <p>Remplissez directement ce formulaire, qui nous permettra de mettre à jour votre fiche professionnel et de mieux vous accompagner dans le développement et la vente de nos clôtures.</p>
+          <a href="formulaire-artisans.html" class="cta">Mettre à jour ma fiche →</a>
+          <p>Et si vous préférez, n'hésitez pas à répondre directement à cet e-mail.</p>
+          <p class="sign">Bien à vous,<br><span class="name">[Prénom · interlocuteur LCF]</span><br>La Clôture Française</p>
+          <div class="note"><b>Rôle →</b> renouer sans présumer de l'historique. On qualifie l'activité (« posez-vous des clôtures ? ») et on capte une mise à jour de fiche via formulaire, avec la réponse mail en solution de repli. Sortie dès réponse ou formulaire rempli.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAIL 2 -->
+    <div class="mail-row">
+      <div class="node">02</div>
+      <div class="day">J+5</div>
+      <div class="mail">
+        <div class="mail-head">
+          <div class="avatar">LCF</div>
+          <div class="from">
+            <div class="from-top">
+              <span class="from-name">La Clôture Française</span>
+              <span class="from-addr">pro@lacloturefrancaise.fr</span>
+            </div>
+            <div class="to">à vous · artisan</div>
+          </div>
+          <span class="stage">Le réseau</span>
+        </div>
+        <div class="subject-bar">
+          <div class="subject-label">Objet</div>
+          <div class="subject">On aimerait vous envoyer des chantiers</div>
+        </div>
+        <div class="body">
+          <p class="greeting">Bonjour [Prénom],</p>
+          <p>Je fais suite à mon e-mail précédent. L'idée derrière notre réseau de poseurs est simple : quand vous posez des clôtures La Clôture Française, vous invitez vos clients à laisser un avis. Dès 3 avis positifs, vous devenez poseur recommandé, et on vous met en relation avec nos clients de votre région qui cherchent un artisan.</p>
+          <p>Autrement dit, on vous envoie des chantiers de pose de clôture dans votre région, que vous acceptez librement selon vos disponibilités. Pour nous, c'est la garantie que nos clôtures sont posées par des pros de confiance ; pour vous, c'est un canal de nouveaux clients sans démarchage.</p>
+          <p>Ça vous intéresse ? Dites-moi simplement si vous posez des clôtures en ce moment, et on avance.</p>
+          <p>Et si vous n'avez pas encore mis à jour votre fiche professionnel, je vous invite à le faire <a href="formulaire-artisans.html" style="color:var(--blue);font-weight:600;">ici</a>.</p>
+          <p class="sign">Bien à vous,<br><span class="name">[Prénom · interlocuteur LCF]</span><br>La Clôture Française</p>
+          <div class="note"><b>Rôle →</b> le cœur de l'offre. Le bénéfice (« on vous envoie des chantiers ») est en objet et en tête, le mécanisme des 3 avis vient après.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAIL 3 -->
+    <div class="mail-row">
+      <div class="node">03</div>
+      <div class="day">J+12</div>
+      <div class="mail">
+        <div class="mail-head">
+          <div class="avatar">LCF</div>
+          <div class="from">
+            <div class="from-top">
+              <span class="from-name">La Clôture Française</span>
+              <span class="from-addr">pro@lacloturefrancaise.fr</span>
+            </div>
+            <div class="to">à vous · artisan</div>
+          </div>
+          <span class="stage">Mieux marger</span>
+        </div>
+        <div class="subject-bar">
+          <div class="subject-label">Objet</div>
+          <div class="subject">Mieux vendre et mieux marger sur vos poses</div>
+        </div>
+        <div class="body">
+          <p class="greeting">Bonjour [Prénom],</p>
+          <p>Au-delà des chantiers qu'on peut vous envoyer, travailler avec La Clôture Française, c'est aussi de meilleures conditions pour votre activité :</p>
+          <ul>
+            <li>Des tarifs pros dédiés, pensés pour protéger votre marge sur chaque pose.</li>
+            <li>Un catalogue complet avec toutes les fiches techniques, pour chiffrer et poser en confiance.</li>
+            <li>Un(e) interlocuteur(rice) dédié(e), joignable quand vous en avez besoin sur un chantier ou pour vous conseiller dans le choix des clôtures.</li>
+          </ul>
+          <p>L'objectif est simple : que vous gagniez mieux votre vie sur chaque clôture posée, et que vous puissiez développer sereinement cette partie de votre activité.</p>
+          <p>Si vous voulez qu'on regarde ensemble ce que ça donnerait pour vous, on peut en parler quelques minutes.</p>
+          <a href="#" class="cta">Prendre rendez-vous →</a>
+          <p class="sign">Bien à vous,<br><span class="name">[Prénom · interlocuteur LCF]</span><br>La Clôture Française</p>
+          <div class="note"><b>Rôle →</b> renforcer avec l'argument marge/développement une fois le bénéfice réseau posé. Premier CTA de prise de rendez-vous ici.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAIL 4 -->
+    <div class="mail-row">
+      <div class="node">04</div>
+      <div class="day">J+20</div>
+      <div class="mail">
+        <div class="mail-head">
+          <div class="avatar person">LCF</div>
+          <div class="from">
+            <div class="from-top">
+              <span class="from-name">La Clôture Française</span>
+              <span class="from-addr">pro@lacloturefrancaise.fr</span>
+            </div>
+            <div class="to">à vous · artisan</div>
+          </div>
+          <span class="stage">Dernière porte</span>
+        </div>
+        <div class="subject-bar">
+          <div class="subject-label">Objet</div>
+          <div class="subject">Je vous laisse tranquille (mais la porte reste ouverte)</div>
+        </div>
+        <div class="body">
+          <p class="greeting">Bonjour [Prénom],</p>
+          <p>Je ne veux pas encombrer votre boîte mail, alors ce sera mon dernier message pour cet été !</p>
+          <p>Si vous êtes en vacances, n'hésitez pas à revenir vers moi à votre retour. Si vous avez changé d'activité, dites-le-moi aussi, ça me permettra de mettre votre fiche à jour.</p>
+          <p>Et autrement, je reste tout simplement disponible pour échanger sur vos enjeux et voir comment on peut vous aider à développer votre activité de pose.</p>
+          <p>Belle fin d'été à vous, et au plaisir d'échanger.</p>
+          <p class="sign">Bien à vous,<br><span class="name">[Prénom · interlocuteur LCF]</span><br>La Clôture Française</p>
+          <div class="note"><b>Rôle →</b> clôture sans pression, porte laissée ouverte dans le temps. Sur 31 contacts à fort potentiel, mieux vaut soigner la dernière impression qu'insister.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="foot">Growth Angels × La Clôture Française · Séquence de réactivation artisans · été 2026</div>
+
+</div>
+</body>
+</html>
